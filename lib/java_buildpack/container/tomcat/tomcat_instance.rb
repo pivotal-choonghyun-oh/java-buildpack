@@ -106,8 +106,6 @@ module JavaBuildpack
       end 
       
       
-      end
-      
       def configure_linking
         document = read_xml context_xml
         context  = REXML::XPath.match(document, '/Context').first
