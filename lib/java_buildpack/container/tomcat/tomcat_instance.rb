@@ -89,8 +89,8 @@ module JavaBuildpack
         end
 
         # jayden-begin
-          puts 'JAYDEN============================<><>><><><><><><<<><><><><'
-          resource_context = REXML::Xpath.match(document, '/Context/Resources').first
+          puts '\nJAYDEN============================<><>><><><><><><<<><><><>'
+          resource_context = REXML::XPath.match(document, '/Context/Resources').first
           resource_context.add_element 'Name', 'jdbc/DefaultDS'
           j1 = services.find_service(FILTER)
           
