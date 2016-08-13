@@ -89,12 +89,39 @@ module JavaBuildpack
         end
 
         # jayden-begin
-          puts '\nJAYDEN============================<><>><><><><><><<<><><><>'
+        
+         manager.add_element 'Store',
+                            'className'          => REDIS_STORE_CLASS_NAME,
+                            'host'               => credentials[KEY_HOST_NAME] || credentials[KEY_HOST],
+                            'port'               => credentials[KEY_PORT],
+                            'database'           => @configuration['database'],
+                            'password'           => credentials[KEY_PASSWORD],
+                            'timeout'            => @configuration['timeout'],
+                            'connectionPoolSize' => @configuration['connection_pool_size']
+                            
+          puts ''
+          puts '-----------------------------------------------------------'
+          puts 'JAYDEN============================<><>><><><><><><<<><><><>'
           resource_context = REXML::XPath.match(document, '/Context/Resources').first
-          resource_context.add_element 'Name', 'jdbc/DefaultDS'
-          j1 = @application.services.find_service('/datasource/')
+         
+          credentials = @application.services.find_service('/ms-sql-datasource/')['credentials']
           
-          puts 'JAYDEN -- Service :'
+          resource_context.add_element  'Resource',
+                                        'name' => credentials['res-name'],
+                                        'auth' => credentials['auth'],
+                                        'maxActive' => credentials['maxActive'],
+                                        'maxIdle' => credentials['maxIdle'] ,
+                                        'maxWait' => credentials['maxWait'] ,
+                                        'username' => credentials['username'] ,
+                                        'password' => credentials['password'] ,
+                                        'driverClassName' => credentials['driverClassName'] ,
+                                        'url' => credentials['url']
+                                        
+          
+          puts 'JAYDEN -- Service : added...'
+          
+           puts '-----------------------------------------------------------'
+         
           
         # jayden-end
         
