@@ -89,16 +89,7 @@ module JavaBuildpack
         end
 
         # jayden-begin
-        
-         manager.add_element 'Store',
-                            'className'          => REDIS_STORE_CLASS_NAME,
-                            'host'               => credentials[KEY_HOST_NAME] || credentials[KEY_HOST],
-                            'port'               => credentials[KEY_PORT],
-                            'database'           => @configuration['database'],
-                            'password'           => credentials[KEY_PASSWORD],
-                            'timeout'            => @configuration['timeout'],
-                            'connectionPoolSize' => @configuration['connection_pool_size']
-                            
+                                   
           puts ''
           puts '-----------------------------------------------------------'
           puts 'JAYDEN============================<><>><><><><><><<<><><><>'
