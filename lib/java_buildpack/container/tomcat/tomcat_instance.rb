@@ -64,7 +64,7 @@ module JavaBuildpack
 
       private
 
-      DS_FILTER = '/ms-sql-datasource/'.freeze
+      DS_FILTER = /ms-sql-datasource/.freeze
       
       private_constant :DS_FILTER
 
@@ -84,27 +84,10 @@ module JavaBuildpack
 
       def ds_supports?
         puts 'ds_support called...'
-        @application.services.one_service? :DS_FILTER
+        @application.services.one_service? DS_FILTER
       end
       
-      def jayden_func
-        puts '1.1...'
-        return unless ds_supports?
-        puts '1.2...'
-          credentials = @application.services.find_service('/ms-sql-datasource/')['credentials']
-        puts '1.3...'
-          resource_context.add_element  'Resource',
-                                        'name' => credentials['res-name'],
-                                        'auth' => credentials['auth'],
-                                        'maxActive' => credentials['maxActive'],
-                                        'maxIdle' => credentials['maxIdle'] ,
-                                        'maxWait' => credentials['maxWait'] ,
-                                        'username' => credentials['username'] ,
-                                        'password' => credentials['password'] ,
-                                        'driverClassName' => credentials['driverClassName'] ,
-                                        'url' => credentials['url']
-      end 
-      
+  
       
       def configure_linking
         document = read_xml context_xml
@@ -123,8 +106,26 @@ module JavaBuildpack
           puts 'JAYDEN============================<><>><><><><><><<<><><><>'
           resource_context = REXML::XPath.match(document, '/Context/Resources').first
           puts '1...'
-           jayden_func          
-                                                  
+         
+          if ds_supports? 
+            credentials = @application.services.find_service(DS_FILTER)['credentials']
+        
+            puts '1.2...'
+        
+            resource_context.add_element  'Resource',
+                                            'name' => credentials['res-name'],
+                                            'auth' => credentials['auth'],
+                                            'maxActive' => credentials['maxActive'],
+                                            'maxIdle' => credentials['maxIdle'] ,
+                                            'maxWait' => credentials['maxWait'] ,
+                                            'username' => credentials['username'] ,
+                                            'password' => credentials['password'] ,
+                                            'driverClassName' => credentials['driverClassName'] ,
+                                            'url' => credentials['url']
+          else
+            puts 'no service attached....'
+          end
+                                                 
           
           puts 'JAYDEN -- Service : added...'
           
