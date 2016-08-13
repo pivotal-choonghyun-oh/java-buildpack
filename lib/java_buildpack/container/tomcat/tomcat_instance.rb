@@ -88,6 +88,11 @@ module JavaBuildpack
           context.add_element 'Resources', 'allowLinking' => true
         end
 
+        # jayden-begin
+          resource_context = REXML::Xpath.match(document, '/Context/Resources').first
+          resource_context.add_element 'Name', 'jdbc/DefaultDS'
+        # jayden-end
+        
         write_xml context_xml, document
       end
 
