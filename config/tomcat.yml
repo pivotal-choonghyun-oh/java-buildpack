@@ -24,7 +24,7 @@ external_configuration:
   version: 1.+
   repository_root: 
 datasource_support:
-  version: 1.+
+  version: 8.+
   repository_root: "{default.repository.root}/tomcat"
 lifecycle_support:
   version: 2.+
