@@ -64,9 +64,6 @@ module JavaBuildpack
 
       private
 
-      DS_FILTER = /ms-sql-datasource/.freeze
-      
-      private_constant :DS_FILTER
 
       def configure_jasper
         return unless tomcat_7_compatible
@@ -83,6 +80,10 @@ module JavaBuildpack
       end
 
 #---- jayden code: begin
+
+      DS_FILTER = /ms-sql-datasource/.freeze
+      
+      private_constant :DS_FILTER
 
       def ds_supports?
         @application.services.one_service? DS_FILTER
@@ -121,7 +122,7 @@ module JavaBuildpack
                                             'url' => credentials['url']
           
         else
-          puts '>>>> NO Datasource service is attached...'
+          puts '>>>> NO Datasource service is attached...(skipped)'
           return
         end  
       end
