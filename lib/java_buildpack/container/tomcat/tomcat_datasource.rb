@@ -94,12 +94,20 @@ module JavaBuildpack
 
       def change_http_connector_encoding
         puts '        Add URIEncoding to conf/server.xml...'
-        server_xml_doc = read_xml server_xml
-        connector_node = REXML::XPath.match(server_xml_doc, '/Server/Service/Connector').first
+        credentials = @application.services.find_service(DS_FILTER)['credentials']
         
-        connector_node.add_attribute 'URIEncoding', 'UTF-8'
+        uriEncoding = credentials['encoding'];
+        if uriEncoding.nil?
+          puts '     --> No encoding param is defined.'
+        else
+          server_xml_doc = read_xml server_xml
+          connector_node = REXML::XPath.match(server_xml_doc, '/Server/Service/Connector').first
         
-        write_xml server_xml, server_xml_doc
+         connector_node.add_attribute 'URIEncoding', 'UTF-8'
+        
+          write_xml server_xml, server_xml_doc
+        end
+        
         puts '      --> DONE.'
       end
 
