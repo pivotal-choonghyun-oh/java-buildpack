@@ -23,7 +23,7 @@ module JavaBuildpack
   module Container
 
     # Encapsulates the detect, compile, and release functionality for Tomcat Datasource support.
-    class TomcatDatasource < JavaBuildpack::Component::BaseComponent
+    class TomcatDatasource < JavaBuildpack::Component::VersionedDependencyComponent
       include JavaBuildpack::Container
 
       # (see JavaBuildpack::Component::BaseComponent#compile)
