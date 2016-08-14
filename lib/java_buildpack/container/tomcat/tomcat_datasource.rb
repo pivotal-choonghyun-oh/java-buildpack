@@ -95,7 +95,7 @@ module JavaBuildpack
       def change_http_connector_encoding
         puts '        Add URIEncoding to conf/server.xml...'
         server_xml_doc = read_xml server_xml
-        connector_node = REXML::XPath.match(document, '/Server/Service/Connector').first
+        connector_node = REXML::XPath.match(server_xml_doc, '/Server/Service/Connector').first
         
         connector_node.add_attribute 'URIEncoding', 'UTF-8'
         
