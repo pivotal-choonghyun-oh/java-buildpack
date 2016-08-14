@@ -33,6 +33,9 @@ module JavaBuildpack
         download_driver
         
         mutate_context
+        
+        change_http_connector_encoding
+        
       end
 
       # (see JavaBuildpack::Component::BaseComponent#release)
