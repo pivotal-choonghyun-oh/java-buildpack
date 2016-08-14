@@ -98,7 +98,9 @@ module JavaBuildpack
           #     - jdbc download url : from env or user-defined service
           # 2. copy jdbc driver to tomcat endorsed directory
           # 3. add jdbc datasource at context.xml
-          download_jar '4.0', 'https://github.com/pivotal-choonghyun-oh/download/raw/master/sqljdbc4.jar', 'sqljdbc4.jar', tomcat_lib
+          
+          
+          download('4.0', 'https://github.com/pivotal-choonghyun-oh/download/raw/master/sqljdbc4.jar') { |file| FileUtils.cp_r(file.path, tomcat_lib + 'sql4.jar') }
           
           resource_context = REXML::XPath.match(context_xml_document, '/Context').first
           
