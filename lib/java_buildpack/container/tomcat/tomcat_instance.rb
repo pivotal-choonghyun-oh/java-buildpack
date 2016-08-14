@@ -96,7 +96,7 @@ module JavaBuildpack
           puts '>>>> Download jdbc dirver and create datasource entry in conf/context.xml...'
           # 1. download jdbc driver
           #     - jdbc download url : from env or user-defined service
-          # 2. copy jdbc driver to tomcat endorsed directory
+          # 2. copy jdbc driver to tomcat lib directory
           # 3. add jdbc datasource at context.xml
           
           credentials = @application.services.find_service(DS_FILTER)['credentials']
@@ -104,17 +104,14 @@ module JavaBuildpack
           download_url = credentials['jdbcDriverDownloadUrl']
           jdbcDriverJarFileName = credentials['jdbcDriverJarFileName']
           
-          # 'https://github.com/pivotal-choonghyun-oh/download/raw/master/sqljdbc4.jar'
-          
           download('1.0', download_url, ) { |file| FileUtils.cp_r(file.path, tomcat_lib + jdbcDriverJarFileName) }
           
           resource_context = REXML::XPath.match(context_xml_document, '/Context').first
           
-          
-
-            resource_context.add_element  'Resource',
+          resource_context.add_element  'Resource',
                                             'name' => credentials['res-name'],
                                             'auth' => credentials['auth'],
+                                            'type' => 'javax.sql.DataSource', 
                                             'maxActive' => credentials['maxActive'],
                                             'maxIdle' => credentials['maxIdle'] ,
                                             'maxWait' => credentials['maxWait'] ,
