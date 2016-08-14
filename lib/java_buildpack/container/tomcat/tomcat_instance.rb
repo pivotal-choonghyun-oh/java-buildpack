@@ -82,12 +82,45 @@ module JavaBuildpack
         write_xml server_xml, document
       end
 
+#---- jayden code: begin
+
       def ds_supports?
-        puts 'ds_support called...'
         @application.services.one_service? DS_FILTER
       end
       
+      def add_datasource_to_context_xml(context_xml_document)
+        puts ''
+        puts '>>> add_datasource_to_context_xml begin ....'
+        
+        if ds_supports?
+          puts '>>>> Download jdbc dirver and create datasource entry in conf/context.xml...'
+          # 1. download jdbc driver
+          #     - jdbc download url : from env or user-defined service
+          # 2. copy jdbc driver to tomcat endorsed directory
+          # 3. add jdbc datasource at context.xml
+          
+          resource_context = REXML::XPath.match(context_xml_document, '/Context').first
+          
+          credentials = @application.services.find_service(DS_FILTER)['credentials']
+
+            resource_context.add_element  'Resource',
+                                            'name' => credentials['res-name'],
+                                            'auth' => credentials['auth'],
+                                            'maxActive' => credentials['maxActive'],
+                                            'maxIdle' => credentials['maxIdle'] ,
+                                            'maxWait' => credentials['maxWait'] ,
+                                            'username' => credentials['username'] ,
+                                            'password' => credentials['password'] ,
+                                            'driverClassName' => credentials['driverClassName'] ,
+                                            'url' => credentials['url']
+          
+        else
+          puts '>>>> NO Datasource service is attached...'
+          return
+        end  
+      end
   
+#---- jayden code: end
       
       def configure_linking
         document = read_xml context_xml
@@ -100,38 +133,9 @@ module JavaBuildpack
         end
 
         # jayden-begin
-                                   
-          puts ''
-          puts '-----------------------------------------------------------'
-          puts 'JAYDEN============================<><>><><><><><><<<><><><>'
-          resource_context = REXML::XPath.match(document, '/Context/Resources').first
-          puts '1...'
-         
-          if ds_supports? 
-            credentials = @application.services.find_service(DS_FILTER)['credentials']
         
-            puts '1.2...'
+        add_datasource_to_context_xml document
         
-            resource_context.add_element  'Resource',
-                                            'name' => credentials['res-name'],
-                                            'auth' => credentials['auth'],
-                                            'maxActive' => credentials['maxActive'],
-                                            'maxIdle' => credentials['maxIdle'] ,
-                                            'maxWait' => credentials['maxWait'] ,
-                                            'username' => credentials['username'] ,
-                                            'password' => credentials['password'] ,
-                                            'driverClassName' => credentials['driverClassName'] ,
-                                            'url' => credentials['url']
-          else
-            puts 'no service attached....'
-          end
-                                                 
-          
-          puts 'JAYDEN -- Service : added...'
-          
-           puts '-----------------------------------------------------------'
-         
-          
         # jayden-end
         
         write_xml context_xml, document
