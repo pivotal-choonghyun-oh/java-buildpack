@@ -103,7 +103,7 @@ module JavaBuildpack
           server_xml_doc = read_xml server_xml
           connector_node = REXML::XPath.match(server_xml_doc, '/Server/Service/Connector').first
         
-         connector_node.add_attribute 'URIEncoding', 'UTF-8'
+         connector_node.add_attribute 'URIEncoding', uriEncoding
         
           write_xml server_xml, server_xml_doc
         end
