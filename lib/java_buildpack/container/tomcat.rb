@@ -67,6 +67,7 @@ module JavaBuildpack
         components << TomcatExternalConfiguration.new(sub_configuration_context(context, 'external_configuration')) if
           tomcat_configuration['external_configuration_enabled']
 
+        # jayden added.
         components << TomcatDatasource.new(sub_configuration_context(context, 'datasource_support'))
         
         components

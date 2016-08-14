@@ -48,7 +48,7 @@ module JavaBuildpack
 
       private
 
-      DS_FILTER = /ms-sql-datasource/.freeze
+      DS_FILTER = /tc-datasource/.freeze
       
       private_constant :DS_FILTER
 
@@ -62,6 +62,7 @@ module JavaBuildpack
         jdbcDriverJarFileName = credentials['jdbcDriverJarFileName']
           
         download('1.0', download_url, ) { |file| FileUtils.cp_r(file.path, tomcat_lib + jdbcDriverJarFileName) }  
+        puts '      --> DONE.'
       end
       
       def mutate_context
@@ -85,6 +86,16 @@ module JavaBuildpack
                                             'url' => credentials['url']
 
         write_xml context_xml, document
+        puts '      --> DONE.'
+      end
+
+      def change_http_connector_encoding
+        server_xml_doc = read_xml server_xml
+        connector_node = REXML::XPath.match(document, '/Server/Service/Connector').first
+        
+        connector_node.add_attribute 'URIEncoding', 'UTF-8'
+        
+        write_xml server_xml, server_xml_doc
       end
 
     end
