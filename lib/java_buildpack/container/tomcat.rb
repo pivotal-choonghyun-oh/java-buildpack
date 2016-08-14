@@ -26,6 +26,9 @@ require 'java_buildpack/container/tomcat/tomcat_redis_store'
 require 'java_buildpack/container/tomcat/tomcat_gemfire_store'
 require 'java_buildpack/util/java_main_utils'
 
+# jayden added
+require 'java_buildpack/container/tomcat/tomcat_datasource'
+
 module JavaBuildpack
   module Container
 
@@ -64,6 +67,8 @@ module JavaBuildpack
         components << TomcatExternalConfiguration.new(sub_configuration_context(context, 'external_configuration')) if
           tomcat_configuration['external_configuration_enabled']
 
+        components << TomcatDatasource.new(context)
+        
         components
       end
 

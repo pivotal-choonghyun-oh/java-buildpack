@@ -141,7 +141,7 @@ module JavaBuildpack
 
         # jayden-begin
         
-        add_datasource_to_context_xml document
+        # add_datasource_to_context_xml document
         
         # jayden-end
         
