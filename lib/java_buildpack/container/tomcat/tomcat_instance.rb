@@ -100,7 +100,7 @@ module JavaBuildpack
           # 3. add jdbc datasource at context.xml
           
           
-          download('4.0', 'https://github.com/pivotal-choonghyun-oh/download/raw/master/sqljdbc4.jar') { |file| FileUtils.cp_r(file.path, tomcat_lib + 'sql4.jar') }
+          download('4.0', 'https://github.com/pivotal-choonghyun-oh/download/raw/master/sqljdbc4.jar') { |file| FileUtils.cp_r(file.path, tomcat_lib) }
           
           resource_context = REXML::XPath.match(context_xml_document, '/Context').first
           
