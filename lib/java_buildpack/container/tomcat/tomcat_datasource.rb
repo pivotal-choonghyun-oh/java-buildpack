@@ -77,7 +77,7 @@ module JavaBuildpack
         credentials = @application.services.find_service(DS_FILTER)['credentials']
           
         context.add_element  'Resource',
-                                            'name' => credentials['res-name'],
+                                            'name' => credentials['name'],
                                             'auth' => credentials['auth'],
                                             'type' => 'javax.sql.DataSource', 
                                             'maxActive' => credentials['maxActive'],
