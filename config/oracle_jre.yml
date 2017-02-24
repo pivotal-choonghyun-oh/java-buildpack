@@ -21,7 +21,7 @@
 ---
 jre:
   version: 1.8.0_+
-  repository_root: "http://oracle-repo.apps.pcfdemo.net"
+  repository_root: "http://oracle-repo.app.sk-btv.com"
 memory_calculator:
   version: 2.+
   repository_root: "{default.repository.root}/memory-calculator/{platform}/{architecture}"
